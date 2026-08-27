@@ -6,6 +6,12 @@ const livesDisplay = document.getElementById("lives");
 const gameOverScreen = document.getElementById("game-over");
 const finalScoreText = document.getElementById("final-score");
 const restartBtn = document.getElementById("restart-btn");
+const redAppleImage = new Image();
+redAppleImage.src = "./images/redApple_cropped.png";
+const greenAppleImage = new Image();
+greenAppleImage.src = "./images/greenApple_cropped.png";
+const wormImage = new Image();
+wormImage.src = "./images/worm_cropped.png";
 
 let score = 0;
 let lives = 3;
@@ -49,6 +55,7 @@ function gameLoop() {
 
 function spawnObject() {
 
+    if (!gameRunning) return;
     if (fallingObjects.length >= 10) {
         return;
     }
@@ -61,19 +68,19 @@ function spawnObject() {
     if (wormsUnlocked && Math.random() < 0.2) {
         type = "worm";
         points = 0;
-        obj.src = "./images/worm_cropped.png";
+        obj.src = wormImage.src;
     }
     else {
         const isGreen = Math.random() < 0.3;
         if (isGreen) {
             type = "greenApple";
             points = 2;
-            obj.src = "./images/greenApple_cropped.png";
+            obj.src = greenAppleImage.src;
         } 
         else {
             type = "redApple";
             points = 1;
-            obj.src = "./images/redApple_cropped.png";
+            obj.src = redAppleImage.src;
         }
     }
 
@@ -104,7 +111,7 @@ function updateFallingObjects() {
     for (let i = fallingObjects.length - 1; i >= 0; i--) {
         const item = fallingObjects[i];
         item.top += item.speed;
-        item.element.style.top = item.top + "px";
+        item.element.style.transform = `translateY(${item.top}px)`;
 
         const objRight = item.left + objectSize;
         const objBottom = item.top + objectSize;
